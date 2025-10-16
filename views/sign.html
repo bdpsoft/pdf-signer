@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad"></script>
+</head>
+<body>
+  <h2>Sign the Document</h2>
+  <iframe id="pdfFrame" width="100%" height="400"></iframe>
+  <form id="signForm">
+    <div id="fields"></div>
+    <canvas id="signature" width="400" height="150" style="border:1px solid #ccc;"></canvas><br>
+    <button type="button" id="clear">Clear Signature</button>
+    <button type="submit">Submit Signed PDF</button>
+  </form>
+
+  <script>
+    const id = window.location.pathname.split("/").pop();
+    document.getElementById("pdfFrame").src = `/pdf/${id}`;
+
+    const predefinedFields = [
+      { property: "FullName", value: "" },
+      { property: "Date", value: new Date().toLocaleDateString() },
+      { property: "Company", value: "" }
+    ];
+
+    const fieldsDiv = document.getElementById("fields");
+    predefinedFields.forEach(f => {
+      const div = document.createElement("div");
+      div.innerHTML = `<label>${f.property}: </label>
+                       <input type="text" name="${f.property}" value="${f.value}"><br>`;
+      fieldsDiv.appendChild(div);
+    });
+
+    const pad = new SignaturePad(document.getElementById("signature"));
+    document.getElementById("clear").onclick = () => pad.clear();
+
+    document.getElementById("signForm").onsubmit = async e => {
+      e.preventDefault();
+      if (pad.isEmpty()) return alert("Please sign first!");
+      const formData = new FormData(e.target);
+      const values = {};
+      for (const [k, v] of formData.entries()) values[k] = v;
+
+      const res = await fetch(`/sign/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ signatureDataUrl: pad.toDataURL(), values })
+      });
+
+      if (res.ok) {
+        alert("Document signed successfully!");
+        window.location.href = "/";
+      } else alert("Error signing document.");
+    };
+  </script>
+</body>
+</html>

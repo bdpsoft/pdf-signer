@@ -1,0 +1,20 @@
+{
+  "name": "pdf-signer",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "express": "^4.19.2",
+    "express-session": "^1.17.3",
+    "multer": "^2.0.2",
+  "nodemailer": "^7.0.9",
+    "passport": "^0.7.0",
+    "passport-microsoft": "^1.0.0",
+    "pdf-lib": "^1.17.1",
+    "uuid": "^9.0.1"
+  }
+}
