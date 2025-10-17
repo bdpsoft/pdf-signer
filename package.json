@@ -4,17 +4,24 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "dotenv": "^16.4.1",
     "express": "^4.19.2",
     "express-session": "^1.17.3",
     "multer": "^2.0.2",
-  "nodemailer": "^7.0.9",
+    "nodemailer": "^7.0.9",
     "passport": "^0.7.0",
     "passport-microsoft": "^1.0.0",
     "pdf-lib": "^1.17.1",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^9.1.12",
+    "storybook": "^9.1.12",
+    "storybook-solidjs-vite": "^9.0.3"
   }
 }
